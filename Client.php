@@ -62,7 +62,7 @@ class Client
             throw (new \Exception('Connection was not established', - 1));
         }
 
-        return ($connection);
+        return $connection;
     }
 
     /**
