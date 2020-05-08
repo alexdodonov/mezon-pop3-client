@@ -82,8 +82,6 @@ class Client
             }
         } catch (\Exception $e) {
             throw ($e);
-            var_dump(get_class($e));
-            var_dump($e->getMessage());
         }
     }
 
