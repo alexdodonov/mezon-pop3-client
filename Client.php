@@ -29,17 +29,13 @@ class Client
      *
      * @param string $server
      *            Server domain
-     * @param string $login
-     *            Login
-     * @param string $password
-     *            Password
      * @param int $timeOut
      *            Timeout
      * @param int $port
      *            Port number
      * @return resource connection
      */
-    protected function initConnection(string $server, string $login, string $password, int $timeOut = 5, int $port = 110)
+    protected function initConnection(string $server, int $timeOut = 5, int $port = 110)
     {
         $errorMessage = '';
         $errorCode = 0;
@@ -82,7 +78,7 @@ class Client
     public function connect(string $server, string $login, string $password, int $timeOut = 5, int $port = 110)
     {
         try {
-            $this->connection = $this->initConnection($server, $login, $password, $timeOut, $port);
+            $this->connection = $this->initConnection($server, $timeOut, $port);
 
             $result = fgets($this->connection, 1024);
 
