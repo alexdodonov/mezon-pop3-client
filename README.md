@@ -1,4 +1,5 @@
-Mezon POP3 Client [![Build Status](https://travis-ci.org/alexdodonov/mezon-pop3-client.svg?branch=master)](https://travis-ci.org/alexdodonov/mezon-pop3-client) [![codecov](https://codecov.io/gh/alexdodonov/mezon-pop3-client/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-pop3-client) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexdodonov/mezon-pop3-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexdodonov/mezon-pop3-client/?branch=master)
+# Mezon POP3 Client
+[![Build Status](https://travis-ci.org/alexdodonov/mezon-pop3-client.svg?branch=master)](https://travis-ci.org/alexdodonov/mezon-pop3-client) [![codecov](https://codecov.io/gh/alexdodonov/mezon-pop3-client/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-pop3-client) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexdodonov/mezon-pop3-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexdodonov/mezon-pop3-client/?branch=master)
 
 ## Installation
 
