@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - '7.2'
+  - '7.3'
+  - '7.4'
+
+before_script:
+  - composer require "mezon/conf"
+
+script:
+  - phpunit --coverage-clover=coverage.xml --configuration=phpunit.xml
+
+after_script:
+ - bash <(curl -s https://codecov.io/bash)
