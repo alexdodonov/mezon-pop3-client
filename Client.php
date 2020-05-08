@@ -19,8 +19,10 @@ class Client
 
     /**
      * Connection
+     * 
+     * @var resource
      */
-    private $connection = false;
+    private $connection = null;
 
     /**
      * Method connects to server
@@ -39,7 +41,8 @@ class Client
     public function connect(string $server, string $login, string $password, int $timeOut = 5, int $port = 110)
     {
         try {
-            $errorCode = $errorMessage = '';
+            $errorMessage = '';
+            $errorCode = 0;
 
             $context = stream_context_create([
                 'ssl' => [
@@ -201,7 +204,8 @@ class Client
     {
         $subject = substr($line, 0, strlen($line) - 2);
 
-        for ($j = $i + 1; $j < count($headers); $j ++) {
+        $count = count($headers);
+        for ($j = $i + 1; $j < $count; $j ++) {
             if (substr($headers[$j], 0, 1) == ' ') {
                 $subject .= str_replace([
                     ' ' . $type,
@@ -214,6 +218,8 @@ class Client
                 return str_replace('Subject: ', '', iconv_mime_decode($subject . "?=\r\n", 0, "UTF-8"));
             }
         }
+
+        return '';
     }
 
     /**
@@ -238,6 +244,8 @@ class Client
                 }
             }
         }
+
+        return '';
     }
 
     /**
