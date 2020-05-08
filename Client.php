@@ -19,10 +19,51 @@ class Client
 
     /**
      * Connection
-     * 
+     *
      * @var resource
      */
     private $connection = null;
+
+    /**
+     * Method returns connection
+     *
+     * @param string $server
+     *            Server domain
+     * @param string $login
+     *            Login
+     * @param string $password
+     *            Password
+     * @param int $timeOut
+     *            Timeout
+     * @param int $port
+     *            Port number
+     * @return resource connection
+     */
+    protected function initConnection(string $server, string $login, string $password, int $timeOut = 5, int $port = 110)
+    {
+        $errorMessage = '';
+        $errorCode = 0;
+
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => false
+            ]
+        ]);
+
+        $connection = stream_socket_client(
+            $server . ":$port",
+            $errorCode,
+            $errorMessage,
+            $timeOut,
+            STREAM_CLIENT_CONNECT,
+            $context);
+
+        if ($connection === false) {
+            throw (new \Exception('Connection was not established', - 1));
+        }
+
+        return ($connection);
+    }
 
     /**
      * Method connects to server
@@ -41,26 +82,7 @@ class Client
     public function connect(string $server, string $login, string $password, int $timeOut = 5, int $port = 110)
     {
         try {
-            $errorMessage = '';
-            $errorCode = 0;
-
-            $context = stream_context_create([
-                'ssl' => [
-                    'verify_peer' => false
-                ]
-            ]);
-
-            $this->connection = stream_socket_client(
-                $server . ":$port",
-                $errorCode,
-                $errorMessage,
-                $timeOut,
-                STREAM_CLIENT_CONNECT,
-                $context);
-
-            if ($this->connection === false) {
-                throw (new \Exception('Connection was not established', - 1));
-            }
+            $this->connection = $this->initConnection($server, $login, $password, $timeOut, $port);
 
             $result = fgets($this->connection, 1024);
 
