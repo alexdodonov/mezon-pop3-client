@@ -1,7 +1,10 @@
 <?php
-require_once (__DIR__ . '/../Client.php');
+namespace Mezon\Pop3\Tests;
 
-class Pop3ClientUnitTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+use Mezon\Pop3\Client;
+
+class Pop3ClientUnitTest extends TestCase
 {
 
     /**
@@ -32,7 +35,7 @@ class Pop3ClientUnitTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        new \Mezon\Pop3\Client($this->server, 'unexisting-1024', 'password', 5, 995);
+        new Client($this->server, 'unexisting-1024', 'password', 5, 995);
     }
 
     /**
@@ -42,7 +45,7 @@ class Pop3ClientUnitTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        new \Mezon\Pop3\Client($this->server, $this->login, 'password', 5, 995);
+        new Client($this->server, $this->login, 'password', 5, 995);
     }
 
     /**
@@ -50,7 +53,7 @@ class Pop3ClientUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testConnect()
     {
-        new \Mezon\Pop3\Client($this->server, $this->login, $this->password, 5, 995);
+        new Client($this->server, $this->login, $this->password, 5, 995);
 
         $this->addToAssertionCount(1);
     }
@@ -60,9 +63,9 @@ class Pop3ClientUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetCount()
     {
-        $client = new \Mezon\Pop3\Client($this->server, $this->login, $this->password, 5, 995);
+        $client = new Client($this->server, $this->login, $this->password, 5, 995);
 
-        $this->assertEquals($client->getCount() > 0, true, 'No emails were fetched');
+        $this->assertGreaterThan(0, $client->getCount(), 'No emails were fetched');
     }
 
     /**
@@ -70,13 +73,13 @@ class Pop3ClientUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetHeaders()
     {
-        $client = new \Mezon\Pop3\Client($this->server, $this->login, $this->password, 5, 995);
+        $client = new Client($this->server, $this->login, $this->password, 5, 995);
 
         $headers = $client->getMessageHeaders(1);
 
-        $this->assertNotEquals(strpos($headers, 'From: '), false, 'No "From" header');
-        $this->assertNotEquals(strpos($headers, 'To: '), false, 'No "To" header');
-        $this->assertNotEquals(strpos($headers, 'Subject: '), false, 'No "Subject" header');
+        $this->assertStringNotContainsString($headers, 'From: ', 'No "From" header');
+        $this->assertStringNotContainsString($headers, 'To: ', 'No "To" header');
+        $this->assertStringNotContainsString($headers, 'Subject: ', 'No "Subject" header');
     }
 
     /**
@@ -84,11 +87,11 @@ class Pop3ClientUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testDeleteEmail()
     {
-        $client = new \Mezon\Pop3\Client($this->server, $this->login, $this->password, 5, 995);
+        $client = new Client($this->server, $this->login, $this->password, 5, 995);
 
         $headers = $client->getMessageHeaders(1);
 
-        $messageId = \Mezon\Pop3\Client::getMessageId($headers);
+        $messageId = Client::getMessageId($headers);
 
         $client->deleteMessage(1);
 
@@ -98,7 +101,7 @@ class Pop3ClientUnitTest extends \PHPUnit\Framework\TestCase
 
         $headers = $client->getMessageHeaders(1);
 
-        $messageId2 = \Mezon\Pop3\Client::getMessageId($headers);
+        $messageId2 = Client::getMessageId($headers);
 
         $this->assertNotEquals($messageId, $messageId2, 'Message was not deleted');
     }
