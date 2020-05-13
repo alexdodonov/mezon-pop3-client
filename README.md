@@ -17,6 +17,15 @@ Firts of all you need to connect
 $client = new \Mezon\Pop3\Client('ssl://your-email-server', 'login', 'password');
 ```
 
+Or in this way:
+
+```PHP
+$client = new \Mezon\Pop3\Client();
+
+// and somewere further
+$client->connect('ssl://your-email-server', 'login', 'password');
+```
+
 And then you can fetch necessary information from server. Such as:
 
 ```PHP

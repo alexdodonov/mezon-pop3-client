@@ -262,6 +262,11 @@ class Client
                     return $this->parseAnyType($line, $i, $headers, '=?UTF-8?Q?');
                 } elseif (strpos($line, '=?UTF-8?B?') !== false) {
                     return $this->parseAnyType($line, $i, $headers, '=?UTF-8?B?');
+                } elseif (strpos($line, '=?') === false) {
+                    // subject is not encoded
+                    return $line;
+                } else {
+                    throw (new \Exception('Subject encoding is not supported yet : ' . $line, - 1));
                 }
             }
         }

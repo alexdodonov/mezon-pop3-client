@@ -31,7 +31,7 @@ class Pop3ClientUnitTest extends TestCase
     /**
      * Login validation
      */
-    public function testInvalidLogin()
+    public function testInvalidLogin(): void
     {
         // setup
         $client = new Client();
@@ -46,7 +46,7 @@ class Pop3ClientUnitTest extends TestCase
     /**
      * Password validation
      */
-    public function testInvalidPassword()
+    public function testInvalidPassword(): void
     {
         // setup
         $client = new Client();
@@ -61,7 +61,7 @@ class Pop3ClientUnitTest extends TestCase
     /**
      * Normal connect
      */
-    public function testConnect()
+    public function testConnect(): void
     {
         // setup
         $client = new Client();
@@ -76,7 +76,7 @@ class Pop3ClientUnitTest extends TestCase
     /**
      * Get emails count
      */
-    public function testGetCount()
+    public function testGetCount(): void
     {
         $client = new Client($this->server, $this->login, $this->password, 5, 995);
 
@@ -86,7 +86,7 @@ class Pop3ClientUnitTest extends TestCase
     /**
      * Get emails headers
      */
-    public function testGetHeaders()
+    public function testGetHeaders(): void
     {
         $client = new Client($this->server, $this->login, $this->password, 5, 995);
 
@@ -100,7 +100,7 @@ class Pop3ClientUnitTest extends TestCase
     /**
      * Delete email
      */
-    public function testDeleteEmail()
+    public function testDeleteEmail(): void
     {
         $client = new Client($this->server, $this->login, $this->password, 5, 995);
 
@@ -119,5 +119,20 @@ class Pop3ClientUnitTest extends TestCase
         $messageId2 = Client::getMessageId($headers);
 
         $this->assertNotEquals($messageId, $messageId2, 'Message was not deleted');
+    }
+
+    /**
+     * Testing getMessageSubject method
+     */
+    public function testGetMessageSubject(): void
+    {
+        // setup
+        $client = new Client($this->server, $this->login, $this->password, 5, 995);
+
+        // test body
+        $subject = $client->getMessageSubject(1);
+
+        // assertions
+        $this->assertNotEmpty($subject);
     }
 }
