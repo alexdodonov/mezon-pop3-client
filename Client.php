@@ -77,32 +77,28 @@ class Client
      */
     public function connect(string $server, string $login, string $password, int $timeOut = 5, int $port = 110)
     {
-        try {
-            $this->connection = $this->initConnection($server, $timeOut, $port);
+        $this->connection = $this->initConnection($server, $timeOut, $port);
 
-            $result = fgets($this->connection, 1024);
+        $result = fgets($this->connection, 1024);
 
-            if (substr($result, 0, 3) !== '+OK') {
-                throw (new \Exception('Connection. ' . $result, 0));
-            }
+        if (substr($result, 0, 3) !== '+OK') {
+            throw (new \Exception('Connection. ' . $result, 0));
+        }
 
-            fputs($this->connection, "USER $login\r\n");
+        fputs($this->connection, "USER $login\r\n");
 
-            $result = fgets($this->connection, 1024);
+        $result = fgets($this->connection, 1024);
 
-            if (substr($result, 0, 3) !== '+OK') {
-                throw (new \Exception("USER $login " . $result, 0));
-            }
+        if (substr($result, 0, 3) !== '+OK') {
+            throw (new \Exception("USER $login " . $result, 0));
+        }
 
-            fputs($this->connection, "PASS $password\r\n");
+        fputs($this->connection, "PASS $password\r\n");
 
-            $result = fgets($this->connection, 1024);
+        $result = fgets($this->connection, 1024);
 
-            if (substr($result, 0, 3) !== '+OK') {
-                throw (new \Exception("PASS " . $result . $login, 0));
-            }
-        } catch (\Exception $e) {
-            throw ($e);
+        if (substr($result, 0, 3) !== '+OK') {
+            throw (new \Exception("PASS " . $result . $login, 0));
         }
     }
 
@@ -120,9 +116,16 @@ class Client
      * @param int $port
      *            Port number
      */
-    public function __construct(string $server, string $login, string $password, int $timeOut = 5, int $port = 110)
+    public function __construct(
+        string $server = '',
+        string $login = '',
+        string $password = '',
+        int $timeOut = 5,
+        int $port = 110)
     {
-        $this->connect($server, $login, $password, $timeOut, $port);
+        if ($server !== '') {
+            $this->connect($server, $login, $password, $timeOut, $port);
+        }
     }
 
     /**

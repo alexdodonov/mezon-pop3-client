@@ -33,9 +33,14 @@ class Pop3ClientUnitTest extends TestCase
      */
     public function testInvalidLogin()
     {
+        // setup
+        $client = new Client();
+
+        // assertions
         $this->expectException(\Exception::class);
 
-        new Client($this->server, 'unexisting-1024', 'password', 5, 995);
+        // test body
+        $client->connect($this->server, 'unexisting-1024', 'password', 5, 995);
     }
 
     /**
@@ -43,9 +48,14 @@ class Pop3ClientUnitTest extends TestCase
      */
     public function testInvalidPassword()
     {
+        // setup
+        $client = new Client();
+
+        // assertions
         $this->expectException(\Exception::class);
 
-        new Client($this->server, $this->login, 'password', 5, 995);
+        // test body
+        $client->connect($this->server, $this->login, 'password', 5, 995);
     }
 
     /**
@@ -53,8 +63,13 @@ class Pop3ClientUnitTest extends TestCase
      */
     public function testConnect()
     {
-        new Client($this->server, $this->login, $this->password, 5, 995);
+        // setup
+        $client = new Client();
 
+        // test body
+        $client->connect($this->server, $this->login, $this->password, 5, 995);
+
+        // assertions
         $this->addToAssertionCount(1);
     }
 
