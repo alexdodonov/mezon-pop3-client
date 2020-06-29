@@ -10,9 +10,11 @@
 			"role": "Founder"
 		}
 	],
+	"require-dev": {
+		"phpunit/phpunit": "^8.5"
+	},
 	"require": {
-		"php": ">=7.2.0",
-		"phpunit/phpunit": "^8.4"
+		"php": ">=7.2.0"
 	},
 	"support": {
 		"email": "alexey@dodonov.pro",
