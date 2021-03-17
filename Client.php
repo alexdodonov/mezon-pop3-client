@@ -179,6 +179,7 @@ class Client
      *            Number of the message
      * @return string Headers
      */
+    // TODO is $i 0 based or 1 based?
     public function getMessageHeaders(int $i): string
     {
         fputs($this->connection, "TOP $i 3\r\n");
