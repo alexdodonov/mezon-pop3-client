@@ -229,7 +229,7 @@ class Client
         $count = count($headers);
         for ($j = $i + 1; $j < $count; $j ++) {
             if (substr($headers[$j], 0, 1) == ' ') {
-                $subject .= str_replace([
+                $subject .= str_ireplace([
                     ' ' . $type,
                     '?='
                 ], [
@@ -259,9 +259,9 @@ class Client
 
         foreach ($headers as $i => $line) {
             if (strpos($line, 'Subject: ') === 0) {
-                if (strpos($line, '=?UTF-8?Q?') !== false) {
+                if (stripos($line, '=?UTF-8?Q?') !== false) {
                     return $this->parseAnyType($line, $i, $headers, '=?UTF-8?Q?');
-                } elseif (strpos($line, '=?UTF-8?B?') !== false) {
+                } elseif (stripos($line, '=?UTF-8?B?') !== false) {
                     return $this->parseAnyType($line, $i, $headers, '=?UTF-8?B?');
                 } elseif (strpos($line, '=?') === false) {
                     // subject is not encoded
