@@ -176,10 +176,9 @@ class Client
      * Method returns email's headers
      *
      * @param int $i
-     *            Number of the message
+     *            Number of the message. Note that numbering is starting from 0
      * @return string Headers
      */
-    // TODO is $i 0 based or 1 based?
     public function getMessageHeaders(int $i): string
     {
         fputs($this->connection, "TOP $i 3\r\n");
