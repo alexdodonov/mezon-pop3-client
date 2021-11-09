@@ -4,6 +4,10 @@ namespace Mezon\Pop3\Tests;
 use PHPUnit\Framework\TestCase;
 use Mezon\Pop3\Client;
 
+/**
+ * 
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class Pop3ClientUnitTest extends TestCase
 {
 
@@ -70,7 +74,7 @@ class Pop3ClientUnitTest extends TestCase
         $client->connect($this->server, $this->login, $this->password, 5, 995);
 
         // assertions
-        $this->addToAssertionCount(1);
+        $this->assertTrue(true);
     }
 
     /**

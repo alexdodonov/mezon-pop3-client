@@ -20,19 +20,33 @@ class Client
     /**
      * Connection
      *
-     * @var resource
+     * @var ?resource
      */
     private $connection = null;
 
     /**
      * Method returns connection
      *
+     * @return resource connection to server
+     */
+    private function getConnection()
+    {
+        if ($this->connection === null) {
+            throw (new \Exception('Connection was not establshed', - 1));
+        }
+
+        return $this->connection;
+    }
+
+    /**
+     * Method returns connection
+     *
      * @param string $server
-     *            Server domain
+     *            server domain
      * @param int $timeOut
-     *            Timeout
+     *            timeout
      * @param int $port
-     *            Port number
+     *            port number
      * @return resource connection
      */
     protected function initConnection(string $server, int $timeOut = 5, int $port = 110)
@@ -75,27 +89,27 @@ class Client
      * @param int $port
      *            Port number
      */
-    public function connect(string $server, string $login, string $password, int $timeOut = 5, int $port = 110)
+    public function connect(string $server, string $login, string $password, int $timeOut = 5, int $port = 110): void
     {
         $this->connection = $this->initConnection($server, $timeOut, $port);
 
-        $result = fgets($this->connection, 1024);
+        $result = fgets($this->getConnection(), 1024);
 
         if (substr($result, 0, 3) !== '+OK') {
             throw (new \Exception('Connection. ' . $result, 0));
         }
 
-        fputs($this->connection, "USER $login\r\n");
+        fputs($this->getConnection(), "USER $login\r\n");
 
-        $result = fgets($this->connection, 1024);
+        $result = fgets($this->getConnection(), 1024);
 
         if (substr($result, 0, 3) !== '+OK') {
             throw (new \Exception("USER $login " . $result, 0));
         }
 
-        fputs($this->connection, "PASS $password\r\n");
+        fputs($this->getConnection(), "PASS $password\r\n");
 
-        $result = fgets($this->connection, 1024);
+        $result = fgets($this->getConnection(), 1024);
 
         if (substr($result, 0, 3) !== '+OK') {
             throw (new \Exception("PASS " . $result . $login, 0));
@@ -133,9 +147,9 @@ class Client
      */
     public function getCount(): int
     {
-        fputs($this->connection, "STAT\r\n");
+        fputs($this->getConnection(), "STAT\r\n");
 
-        $result = fgets($this->connection, 1024);
+        $result = fgets($this->getConnection(), 1024);
 
         if (substr($result, 0, 3) !== '+OK') {
             throw (new \Exception("STAT " . $result, 0));
@@ -155,8 +169,8 @@ class Client
     {
         $data = '';
 
-        while (! feof($this->connection)) {
-            $buffer = chop(fgets($this->connection, 1024));
+        while (! feof($this->getConnection())) {
+            $buffer = chop(fgets($this->getConnection(), 1024));
 
             if (strpos($buffer, '-ERR') === 0) {
                 throw (new \Exception(str_replace('-ERR ', '', $buffer), 0));
@@ -181,7 +195,7 @@ class Client
      */
     public function getMessageHeaders(int $i): string
     {
-        fputs($this->connection, "TOP $i 3\r\n");
+        fputs($this->getConnection(), "TOP $i 3\r\n");
 
         return $this->getData();
     }
@@ -195,17 +209,17 @@ class Client
      */
     public function deleteMessage($i): string
     {
-        fputs($this->connection, "DELE $i\r\n");
+        fputs($this->getConnection(), "DELE $i\r\n");
 
-        return fgets($this->connection);
+        return fgets($this->getConnection());
     }
 
     /**
      * Method terminates session
      */
-    public function quit()
+    public function quit(): void
     {
-        fputs($this->connection, "QUIT\r\n");
+        fputs($this->getConnection(), "QUIT\r\n");
     }
 
     /**
@@ -215,7 +229,7 @@ class Client
      *            Line of the email
      * @param int $i
      *            Line cursor
-     * @param array $headers
+     * @param string[] $headers
      *            Email headers
      * @param string $type
      *            Mime type
@@ -302,7 +316,7 @@ class Client
      * @param string $subject
      *            subject of emails to be deleted
      */
-    public function deleteMessagesWithSubject(string $subject)
+    public function deleteMessagesWithSubject(string $subject): void
     {
         $count = $this->getCount();
 
